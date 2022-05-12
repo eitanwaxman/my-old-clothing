@@ -1,4 +1,4 @@
-.signup-form-container {
+.signin-form-container {
   display: flex;
   flex-direction: column;
   width: 380px;
@@ -8,5 +8,10 @@
     font-weight: bold;
     padding: 0;
     margin: 0;
+  }
+
+  .submit-button-wrapper {
+    display: flex;
+    flex-direction: row;
   }
 }

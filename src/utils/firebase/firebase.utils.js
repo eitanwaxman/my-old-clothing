@@ -4,8 +4,11 @@ import {
   getAuth,
   signInWithPopup,
   signInWithRedirect,
+  signInWithEmailAndPassword,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -29,6 +32,7 @@ const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+
 export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, provider);
 
@@ -57,8 +61,31 @@ export const createUserDoc = async (userAuth) => {
   return docRef;
 };
 
-export const signInwithGoogleEmailAndPassword = async (email, password) => {
+export const createUserWithGoogleEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
   return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const signInUserWithGoogleEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+
+  const { user } = await signInWithEmailAndPassword(auth, email, password);
+
+  // const docRef = doc(db, "users", user.uid);
+  // const docSnap = await getDoc(docRef);
+
+  // if (docSnap.exists()) {
+  //   return docSnap.data();
+  // } else {
+  //   console.log("No such document!");
+  // }
+};
+
+export const signOutWithGoogle = async () => {
+  return await signOut(auth);
+};
+
+export const addAuthStateChangeListener = (callback) => {
+  onAuthStateChanged(auth, callback);
 };

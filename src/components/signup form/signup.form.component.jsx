@@ -1,10 +1,11 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Input from "../input/input.component";
 import Button from "../button/button.component";
+//import { UserContext } from "../../contexts/user.context";
 import "./signup.form.styles.scss";
 import {
-  signInwithGoogleEmailAndPassword,
+  createUserWithGoogleEmailAndPassword,
   createUserDoc,
 } from "../../utils/firebase/firebase.utils";
 
@@ -16,6 +17,8 @@ const formDefault = {
 };
 
 const SignupForm = () => {
+  //const { setUser } = useContext(UserContext);
+
   const [formValues, setFormValues] = useState(formDefault);
   const { displayName, email, password, confirmPassword } = formValues;
 
@@ -27,13 +30,21 @@ const SignupForm = () => {
   const onFormSubmit = async (event) => {
     event.preventDefault();
     if (password == confirmPassword) {
-      const response = await signInwithGoogleEmailAndPassword(email, password);
-      const user = {
-        uid: response.user.uid,
-        displayName: displayName,
-        email: email,
-      };
-      createUserDoc(user);
+      try {
+        const response = await createUserWithGoogleEmailAndPassword(
+          email,
+          password
+        );
+        const user = {
+          uid: response.user.uid,
+          displayName: displayName,
+          email: email,
+        };
+        createUserDoc(user);
+        //setUser(user);
+      } catch (error) {
+        console.log("error", error);
+      }
     } else {
       console.log("passwords don't match");
     }
@@ -41,7 +52,8 @@ const SignupForm = () => {
 
   return (
     <div className="signup-form-container">
-      <h2>New here? Sign up!</h2>
+      <h2>New here?</h2>
+      <p>Sign up with your email address</p>
       <form onSubmit={onFormSubmit}>
         <Input
           label="Display Name"

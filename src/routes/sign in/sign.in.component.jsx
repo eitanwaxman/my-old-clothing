@@ -1,19 +1,15 @@
 import SignupForm from "../../components/signup form/signup.form.component.jsx";
+import SigninForm from "../../components/signin form/signin.form.component.jsx";
+import "./sign.in.component.styles.scss";
 import {
   signInWithGooglePopup,
   createUserDoc,
 } from "../../utils/firebase/firebase.utils.js";
 
 const SignIn = () => {
-  const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    createUserDoc(user);
-  };
-
   return (
-    <div>
-      Sign in page
-      <button onClick={signInWithGoogle}> Sign in with google</button>
+    <div className="sign-in-wrapper">
+      <SigninForm />
       <SignupForm />
     </div>
   );
